@@ -14,7 +14,12 @@ export class BeastManager {
     [BeastType.Brute]: ArmorType.Metal,
   };
 
-  constructor() {}
+  // pass in alternateImagePath to use a different image path
+  private alternateImagePath: string = "";
+
+  constructor(alternateImagePath?: string) {
+    this.alternateImagePath = alternateImagePath || "";
+  }
 
   getBeastName(beast: Beasts): string {
     return Beasts[beast];
@@ -49,6 +54,9 @@ export class BeastManager {
   }
 
   getBeastImage(beast: Beasts): string {
+    if (this.alternateImagePath) {
+      return this.alternateImagePath + BEAST_IMAGES[beast];
+    }
     return S3_BUCKET + BEAST_IMAGES[beast];
   }
 
