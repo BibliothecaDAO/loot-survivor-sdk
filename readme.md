@@ -1,6 +1,4 @@
-# Loot Survivor SDK
-
-![Loot Survivor Logo](https://example.com/loot-survivor-logo.png)
+# <img src="./skull.svg" alt="Loot Survivor Logo" width="100" height="100"> Loot Survivor SDK
 
 [![npm version](https://img.shields.io/npm/v/loot-survivor-sdk.svg)](https://www.npmjs.com/package/loot-survivor-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -18,6 +16,7 @@ Currently the only package is the `core` which is vanilla.js of the following:
 - [] Zustand State
 - [] Abstracted Graphql queries for deep information
 - [] gPRC provider
+- [] React Package
 
 ## Usage
 
