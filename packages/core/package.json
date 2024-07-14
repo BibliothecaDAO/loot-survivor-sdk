@@ -1,0 +1,30 @@
+{
+  "name": "lootsurvivor.js",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "source": "src/index.ts",
+  "scripts": {
+    "build": "tsup --config tsup.config.ts",
+    "test": "vitest run --coverage"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "starknet": "^6.11.0",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.3",
+    "vitest": "^2.0.2",
+    "zustand": "^4.5.4"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.2"
+  }
+}

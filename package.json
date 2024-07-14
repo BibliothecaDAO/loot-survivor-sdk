@@ -1,0 +1,13 @@
+{
+  "name": "lootsurvivor.js",
+  "scripts": {
+    "build": "pnpm --dir packages/core build",
+    "test": "pnpm --dir packages/core test"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lerna": "^8.1.5",
+    "prettier": "^3.0.3",
+    "tsup": "^8.1.0"
+  }
+}
