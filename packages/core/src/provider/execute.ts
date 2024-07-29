@@ -9,30 +9,46 @@
 // * 4. Execute function calls the account.execute function
 // * 5. Format txs and pipe back into the store
 
-import { Account } from "starknet";
 import {
-  ItemPurchase,
-  MulticallEntry,
-  SELECTOR_KEYS,
-  SelectorKey,
-  Stats,
-} from "../type";
+  Account,
+  InvokeTransactionReceiptResponse,
+  RpcProvider,
+} from "starknet";
+import { ItemPurchase, MulticallEntry, Stats } from "../type";
+import { parseEvents } from "../state/format";
+import { useSurvivorStore } from "../state";
 
 export class ExecuteProvider {
   private lootSurvivorAddress!: string;
 
   private defaultAccount?: Account;
 
-  constructor(lootSurvivorAddress: string, defaultAccount?: Account) {
+  private provider: RpcProvider;
+
+  constructor(
+    lootSurvivorAddress: string,
+    provider: RpcProvider,
+    defaultAccount?: Account
+  ) {
     this.lootSurvivorAddress = lootSurvivorAddress;
 
     this.defaultAccount = defaultAccount;
+
+    this.provider = provider;
   }
 
   private getAccount(account?: Account): Account {
     if (account) return account;
     if (this.defaultAccount) return this.defaultAccount;
     throw new Error("No account provided");
+  }
+
+  private async processAndUpdateState(
+    receipt: InvokeTransactionReceiptResponse
+  ) {
+    const events = parseEvents(receipt as InvokeTransactionReceiptResponse);
+
+    useSurvivorStore.getState().survivor?.updateFromEvents(events);
   }
 
   async newGame(
@@ -44,7 +60,7 @@ export class ExecuteProvider {
     account?: Account
   ) {
     try {
-      const tx = await this.getAccount(account).execute({
+      const { transaction_hash } = await this.getAccount(account).execute({
         contractAddress: this.lootSurvivorAddress,
         entrypoint: "new_game",
         calldata: [
@@ -55,7 +71,12 @@ export class ExecuteProvider {
           vrfFeeLimit,
         ],
       });
-      console.log(tx);
+
+      this.processAndUpdateState(
+        (await this.provider.waitForTransaction(
+          transaction_hash
+        )) as InvokeTransactionReceiptResponse
+      );
     } catch (e) {
       console.error(e);
     }
@@ -63,12 +84,16 @@ export class ExecuteProvider {
 
   async explore(adventurerId: string, tillBeast: boolean, account?: Account) {
     try {
-      const tx = await this.getAccount(account).execute({
+      const { transaction_hash } = await this.getAccount(account).execute({
         contractAddress: this.lootSurvivorAddress,
         entrypoint: "explore",
         calldata: [adventurerId, tillBeast ? 1 : 0],
       });
-      console.log(tx);
+      this.processAndUpdateState(
+        (await this.provider.waitForTransaction(
+          transaction_hash
+        )) as InvokeTransactionReceiptResponse
+      );
     } catch (e) {
       console.error(e);
     }
@@ -76,12 +101,17 @@ export class ExecuteProvider {
 
   async attack(adventurerId: string, toTheDeath: boolean, account?: Account) {
     try {
-      const tx = await this.getAccount(account).execute({
+      const { transaction_hash } = await this.getAccount(account).execute({
         contractAddress: this.lootSurvivorAddress,
         entrypoint: "attack",
         calldata: [adventurerId, toTheDeath ? 1 : 0],
       });
-      console.log(tx);
+
+      this.processAndUpdateState(
+        (await this.provider.waitForTransaction(
+          transaction_hash
+        )) as InvokeTransactionReceiptResponse
+      );
     } catch (e) {
       console.error(e);
     }
@@ -89,12 +119,16 @@ export class ExecuteProvider {
 
   async flee(adventurerId: string, toTheDeath: boolean, account?: Account) {
     try {
-      const tx = await this.getAccount(account).execute({
+      const { transaction_hash } = await this.getAccount(account).execute({
         contractAddress: this.lootSurvivorAddress,
         entrypoint: "flee",
         calldata: [adventurerId, toTheDeath ? 1 : 0],
       });
-      console.log(tx);
+      this.processAndUpdateState(
+        (await this.provider.waitForTransaction(
+          transaction_hash
+        )) as InvokeTransactionReceiptResponse
+      );
     } catch (e) {
       console.error(e);
     }
@@ -102,12 +136,16 @@ export class ExecuteProvider {
 
   async equip(adventurerId: string, items: number[], account?: Account) {
     try {
-      const tx = await this.getAccount(account).execute({
+      const { transaction_hash } = await this.getAccount(account).execute({
         contractAddress: this.lootSurvivorAddress,
         entrypoint: "equip",
         calldata: [adventurerId, ...items],
       });
-      console.log(tx);
+      this.processAndUpdateState(
+        (await this.provider.waitForTransaction(
+          transaction_hash
+        )) as InvokeTransactionReceiptResponse
+      );
     } catch (e) {
       console.error(e);
     }
@@ -115,12 +153,16 @@ export class ExecuteProvider {
 
   async drop(adventurerId: string, items: number[], account?: Account) {
     try {
-      const tx = await this.getAccount(account).execute({
+      const { transaction_hash } = await this.getAccount(account).execute({
         contractAddress: this.lootSurvivorAddress,
         entrypoint: "drop",
         calldata: [adventurerId, ...items],
       });
-      console.log(tx);
+      this.processAndUpdateState(
+        (await this.provider.waitForTransaction(
+          transaction_hash
+        )) as InvokeTransactionReceiptResponse
+      );
     } catch (e) {
       console.error(e);
     }
@@ -134,7 +176,7 @@ export class ExecuteProvider {
     account?: Account
   ) {
     try {
-      const tx = await this.getAccount(account).execute({
+      const { transaction_hash } = await this.getAccount(account).execute({
         contractAddress: this.lootSurvivorAddress,
         entrypoint: "upgrade",
         calldata: [
@@ -144,7 +186,11 @@ export class ExecuteProvider {
           ...items.flatMap((item) => item),
         ],
       });
-      console.log(tx);
+      this.processAndUpdateState(
+        (await this.provider.waitForTransaction(
+          transaction_hash
+        )) as InvokeTransactionReceiptResponse
+      );
     } catch (e) {
       console.error(e);
     }
@@ -152,12 +198,16 @@ export class ExecuteProvider {
 
   async updateCostToPlay(account?: Account) {
     try {
-      const tx = await this.getAccount(account).execute({
+      const { transaction_hash } = await this.getAccount(account).execute({
         contractAddress: this.lootSurvivorAddress,
         entrypoint: "update_cost_to_play",
         calldata: [],
       });
-      console.log(tx);
+      this.processAndUpdateState(
+        (await this.provider.waitForTransaction(
+          transaction_hash
+        )) as InvokeTransactionReceiptResponse
+      );
     } catch (e) {
       console.error(e);
     }
@@ -165,22 +215,22 @@ export class ExecuteProvider {
 
   async multiCall(calls: MulticallEntry[], account?: Account) {
     try {
-      const tx = await this.getAccount(account).execute(
+      const { transaction_hash } = await this.getAccount(account).execute(
         calls.map((call) => ({
           contractAddress: this.lootSurvivorAddress,
           entrypoint: call.entrypoint,
           calldata: call.calldata,
         }))
       );
-      console.log(tx);
-      return tx;
+
+      this.processAndUpdateState(
+        (await this.provider.waitForTransaction(
+          transaction_hash
+        )) as InvokeTransactionReceiptResponse
+      );
     } catch (e) {
       console.error("Multicall error:", e);
       throw e;
     }
-  }
-
-  getSelectorKey(key: SelectorKey): string {
-    return SELECTOR_KEYS[key];
   }
 }

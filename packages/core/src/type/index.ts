@@ -1,4 +1,7 @@
 import { hash } from "starknet";
+import { Adventurer, AdventurerMetadata, Bag } from "./events";
+
+export * from "./events";
 
 export interface Stats {
   strength: number;
@@ -100,37 +103,37 @@ export interface BattleEvent {
   location?: string;
 }
 
-export interface Adventurer {
-  id: number;
-  beastHealth: number;
-  charisma: number;
-  chest: string;
-  createdTime: string;
-  dexterity: number;
-  entropy: string;
-  foot: string;
-  gold: number;
-  hand: string;
-  head: string;
-  health: number;
-  intelligence: number;
-  lastUpdatedTime: string;
-  luck: number;
-  name: string;
-  neck: string;
-  owner: string;
-  revealBlock: number;
-  ring: string;
-  startEntropy: string;
-  statUpgrades: number;
-  strength: number;
-  timestamp: string;
-  vitality: number;
-  waist: string;
-  weapon: string;
-  wisdom: number;
-  xp: number;
-}
+// export interface Adventurer {
+//   id: number;
+//   beastHealth: number;
+//   charisma: number;
+//   chest: string;
+//   createdTime: string;
+//   dexterity: number;
+//   entropy: string;
+//   foot: string;
+//   gold: number;
+//   hand: string;
+//   head: string;
+//   health: number;
+//   intelligence: number;
+//   lastUpdatedTime: string;
+//   luck: number;
+//   name: string;
+//   neck: string;
+//   owner: string;
+//   revealBlock: number;
+//   ring: string;
+//   startEntropy: string;
+//   statUpgrades: number;
+//   strength: number;
+//   timestamp: string;
+//   vitality: number;
+//   waist: string;
+//   weapon: string;
+//   wisdom: number;
+//   xp: number;
+// }
 
 export interface Battle {
   attacker: string;
@@ -191,8 +194,11 @@ export interface Score {
 export interface GameState {
   beast: Beast;
   adventurer: Adventurer;
+  adventurerMetadata: AdventurerMetadata;
   currentBattle: Battle;
   lastDiscovery: Discovery;
+  bag: Bag;
+  revealBlock: number;
 }
 
 export enum Beasts {
@@ -717,12 +723,14 @@ export enum Status {
   Open = 1,
 }
 
-export enum SelectorKey {
+export enum SELECTORS {
   StartGame = "StartGame",
   AdventurerUpgraded = "AdventurerUpgraded",
   DiscoveredHealth = "DiscoveredHealth",
   DiscoveredGold = "DiscoveredGold",
+  DiscoveredLoot = "DiscoveredLoot",
   DiscoveredXP = "DiscoveredXP",
+  EquipmentChanged = "EquipmentChanged",
   DodgedObstacle = "DodgedObstacle",
   HitByObstacle = "HitByObstacle",
   DiscoveredBeast = "DiscoveredBeast",
@@ -745,35 +753,32 @@ export enum SelectorKey {
   Transfer = "Transfer",
 }
 
-export const SELECTOR_KEYS: Record<SelectorKey, string> = {
-  [SelectorKey.StartGame]: hash.getSelectorFromName("StartGame"),
-  [SelectorKey.AdventurerUpgraded]:
-    hash.getSelectorFromName("AdventurerUpgraded"),
-  [SelectorKey.DiscoveredHealth]: hash.getSelectorFromName("DiscoveredHealth"),
-  [SelectorKey.DiscoveredGold]: hash.getSelectorFromName("DiscoveredGold"),
-  [SelectorKey.DiscoveredXP]: hash.getSelectorFromName("DiscoveredXP"),
-  [SelectorKey.DodgedObstacle]: hash.getSelectorFromName("DodgedObstacle"),
-  [SelectorKey.HitByObstacle]: hash.getSelectorFromName("HitByObstacle"),
-  [SelectorKey.DiscoveredBeast]: hash.getSelectorFromName("DiscoveredBeast"),
-  [SelectorKey.AmbushedByBeast]: hash.getSelectorFromName("AmbushedByBeast"),
-  [SelectorKey.AttackedBeast]: hash.getSelectorFromName("AttackedBeast"),
-  [SelectorKey.AttackedByBeast]: hash.getSelectorFromName("AttackedByBeast"),
-  [SelectorKey.SlayedBeast]: hash.getSelectorFromName("SlayedBeast"),
-  [SelectorKey.FleeFailed]: hash.getSelectorFromName("FleeFailed"),
-  [SelectorKey.FleeSucceeded]: hash.getSelectorFromName("FleeSucceeded"),
-  [SelectorKey.PurchasedItems]: hash.getSelectorFromName("PurchasedItems"),
-  [SelectorKey.PurchasedPotions]: hash.getSelectorFromName("PurchasedPotions"),
-  [SelectorKey.EquippedItems]: hash.getSelectorFromName("EquippedItems"),
-  [SelectorKey.DroppedItems]: hash.getSelectorFromName("DroppedItems"),
-  [SelectorKey.GreatnessIncreased]:
-    hash.getSelectorFromName("GreatnessIncreased"),
-  [SelectorKey.ItemsLeveledUp]: hash.getSelectorFromName("ItemsLeveledUp"),
-  [SelectorKey.NewHighScore]: hash.getSelectorFromName("NewHighScore"),
-  [SelectorKey.AdventurerDied]: hash.getSelectorFromName("AdventurerDied"),
-  [SelectorKey.AdventurerLeveledUp]: hash.getSelectorFromName(
-    "AdventurerLeveledUp"
-  ),
-  [SelectorKey.UpgradesAvailable]:
-    hash.getSelectorFromName("UpgradesAvailable"),
-  [SelectorKey.Transfer]: hash.getSelectorFromName("Transfer"),
+export const HASHED_SELECTORS = {
+  StartGame: hash.getSelectorFromName(SELECTORS.StartGame),
+  AdventurerUpgraded: hash.getSelectorFromName(SELECTORS.AdventurerUpgraded),
+  DiscoveredHealth: hash.getSelectorFromName(SELECTORS.DiscoveredHealth),
+  DiscoveredGold: hash.getSelectorFromName(SELECTORS.DiscoveredGold),
+  DiscoveredLoot: hash.getSelectorFromName(SELECTORS.DiscoveredLoot),
+  DiscoveredXP: hash.getSelectorFromName(SELECTORS.DiscoveredXP),
+  EquipmentChanged: hash.getSelectorFromName(SELECTORS.EquipmentChanged),
+  DodgedObstacle: hash.getSelectorFromName(SELECTORS.DodgedObstacle),
+  HitByObstacle: hash.getSelectorFromName(SELECTORS.HitByObstacle),
+  DiscoveredBeast: hash.getSelectorFromName(SELECTORS.DiscoveredBeast),
+  AmbushedByBeast: hash.getSelectorFromName(SELECTORS.AmbushedByBeast),
+  AttackedBeast: hash.getSelectorFromName(SELECTORS.AttackedBeast),
+  AttackedByBeast: hash.getSelectorFromName(SELECTORS.AttackedByBeast),
+  SlayedBeast: hash.getSelectorFromName(SELECTORS.SlayedBeast),
+  FleeFailed: hash.getSelectorFromName(SELECTORS.FleeFailed),
+  FleeSucceeded: hash.getSelectorFromName(SELECTORS.FleeSucceeded),
+  PurchasedItems: hash.getSelectorFromName(SELECTORS.PurchasedItems),
+  PurchasedPotions: hash.getSelectorFromName(SELECTORS.PurchasedPotions),
+  EquippedItems: hash.getSelectorFromName(SELECTORS.EquippedItems),
+  DroppedItems: hash.getSelectorFromName(SELECTORS.DroppedItems),
+  GreatnessIncreased: hash.getSelectorFromName(SELECTORS.GreatnessIncreased),
+  ItemsLeveledUp: hash.getSelectorFromName(SELECTORS.ItemsLeveledUp),
+  NewHighScore: hash.getSelectorFromName(SELECTORS.NewHighScore),
+  AdventurerDied: hash.getSelectorFromName(SELECTORS.AdventurerDied),
+  AdventurerLeveledUp: hash.getSelectorFromName(SELECTORS.AdventurerLeveledUp),
+  UpgradesAvailable: hash.getSelectorFromName(SELECTORS.UpgradesAvailable),
+  Transfer: hash.getSelectorFromName(SELECTORS.Transfer),
 };

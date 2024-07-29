@@ -1,5 +1,5 @@
 {
-  "name": "lootsurvivor.js",
+  "name": "@lootsurvivor",
   "scripts": {
     "build": "pnpm --dir packages/core build",
     "test": "pnpm --dir packages/core test"

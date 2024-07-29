@@ -2,49 +2,35 @@
 
 // When updates happen to any of these, the store will be updated and the UI will be updated accordingly.
 
-// You just have to call the updateState function with the new state and the store will be updated.
+// You just have to call the updateGameState function with the new state and the store will be updated.
 
-import { create } from "zustand";
+import { createStore } from "zustand/vanilla";
 import { devtools } from "zustand/middleware";
-import { GameState } from "../type";
 
-interface GameStateStore {
-  gameState: Partial<GameState>;
-  setGameState: (newState: Partial<GameState>) => void;
-  updateGameState: (partialState: Partial<GameState>) => void;
+import { Survivor } from "../objects/survivor";
+
+export interface SurvivorStore {
+  survivor: Survivor | null;
+  updateSurvivor: (updates: Survivor) => void;
+  clearSurvivor: () => void;
+  newSurvivor: () => void;
 }
 
-export const useGameStateStore = create<GameStateStore>()(
+export const useSurvivorStore = createStore<SurvivorStore>()(
   devtools(
     (set) => ({
-      gameState: {},
-      setGameState: (newState) => set({ gameState: newState }),
-      updateGameState: (partialState) =>
-        set((state) => ({
-          gameState: { ...state.gameState, ...partialState },
-        })),
+      survivor: null,
+      newSurvivor: () => {
+        set(() => {
+          return { survivor: new Survivor() };
+        });
+      },
+      clearSurvivor: () => set({ survivor: null }),
+      updateSurvivor: (survivor: Survivor) =>
+        set(() => {
+          return { survivor };
+        }),
     }),
-    { name: "Game State Store" }
+    { name: "Survivor Store" }
   )
 );
-
-export const updateState = (state: Partial<GameState>) => {
-  if (state.adventurer) {
-    useGameStateStore
-      .getState()
-      .updateGameState({ adventurer: state.adventurer });
-  }
-  if (state.beast) {
-    useGameStateStore.getState().updateGameState({ beast: state.beast });
-  }
-  if (state.currentBattle) {
-    useGameStateStore
-      .getState()
-      .updateGameState({ currentBattle: state.currentBattle });
-  }
-  if (state.lastDiscovery) {
-    useGameStateStore
-      .getState()
-      .updateGameState({ lastDiscovery: state.lastDiscovery });
-  }
-};

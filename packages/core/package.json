@@ -1,16 +1,18 @@
 {
-  "name": "lootsurvivor.js",
+  "name": "@lootsurvivor/core",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "source": "src/index.ts",
   "scripts": {
-    "build": "tsup --config tsup.config.ts",
+    "build": "tsup --format cjs,esm --dts",
     "test": "vitest run --coverage"
   },
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
     }
   },
