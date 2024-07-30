@@ -3,3 +3,4 @@ export * from "./provider";
 export * from "./type";
 export * from "./constants";
 export * from "./state";
+export * from "./query";

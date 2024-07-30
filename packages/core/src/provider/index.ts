@@ -35,10 +35,10 @@ export class LootSurvivor {
     this.account = account;
 
     this.beasts = new BeastManager();
-    this.loot = new LootManager();
     this.prediction = new PredictionManager();
     this.executeProvider = new ExecuteProvider(
       this.lootSurvivorAddress,
+      this.provider,
       this.account
     );
   }

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.77% </span>
+                <span class="strong">97.82% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>439/449</span>
+                <span class='fraction'>450/460</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.65% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>26/29</span>
+                <span class='fraction'>27/30</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96% </span>
+                <span class="strong">96.15% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>24/25</span>
+                <span class='fraction'>25/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.77% </span>
+                <span class="strong">97.82% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>439/449</span>
+                <span class='fraction'>450/460</span>
             </div>
         
             
@@ -560,7 +560,19 @@
 <a name='L495'></a><a href='#L495'>495</a>
 <a name='L496'></a><a href='#L496'>496</a>
 <a name='L497'></a><a href='#L497'>497</a>
-<a name='L498'></a><a href='#L498'>498</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L498'></a><a href='#L498'>498</a>
+<a name='L499'></a><a href='#L499'>499</a>
+<a name='L500'></a><a href='#L500'>500</a>
+<a name='L501'></a><a href='#L501'>501</a>
+<a name='L502'></a><a href='#L502'>502</a>
+<a name='L503'></a><a href='#L503'>503</a>
+<a name='L504'></a><a href='#L504'>504</a>
+<a name='L505'></a><a href='#L505'>505</a>
+<a name='L506'></a><a href='#L506'>506</a>
+<a name='L507'></a><a href='#L507'>507</a>
+<a name='L508'></a><a href='#L508'>508</a>
+<a name='L509'></a><a href='#L509'>509</a>
+<a name='L510'></a><a href='#L510'>510</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -582,7 +594,19 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -1078,11 +1102,23 @@ export class LootManager {
   private static SUFFIX_UNLOCK_GREATNESS = 15;
   private static PREFIXES_UNLOCK_GREATNESS = 19;
 &nbsp;
-  constructor() {}
+  private item: Loot;
+  private xp: number;
+  private seed: bigint;
 &nbsp;
-  getFullItemName(item: Loot, xp: number, seed: bigint): string {
-    const itemName = this.getItemName(item);
-    const specials = this.getSpecials(item, this.calculateGreatness(xp), seed);
+  constructor(item: Loot, xp: number, seed: bigint) {
+    this.item = item;
+    this.xp = xp;
+    this.seed = seed;
+  }
+&nbsp;
+  getFullItemName(): string {
+    const itemName = this.getItemName();
+    const specials = this.getSpecials(
+      this.item,
+      this.calculateGreatness(this.xp),
+      this.seed
+    );
 &nbsp;
     let name = itemName;
 &nbsp;
@@ -1127,20 +1163,20 @@ export class LootManager {
     }
   }
 &nbsp;
-  getItemName(item: Loot): string {
-    return Loot[item];
+  getItemName(): string {
+    return Loot[this.item];
   }
 &nbsp;
   getItemNumber(itemName: string): Loot | undefined {
     return Loot[itemName as keyof typeof Loot];
   }
 &nbsp;
-  getItemType(item: Loot): ItemType {
-    return ITEM_TYPES[item];
+  getItemType(): ItemType {
+    return ITEM_TYPES[this.item];
   }
 &nbsp;
-  getItemSlot(item: Loot): ItemSlot {
-    return ITEM_SLOTS[item];
+  getItemSlot(): ItemSlot {
+    return ITEM_SLOTS[this.item];
   }
 &nbsp;
   getItemNamePrefix(prefix: ItemNamePrefix): string {
@@ -1561,7 +1597,7 @@ export const ITEM_SLOTS: Record&lt;Loot, ItemSlot&gt; = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-30T02:58:27.537Z
+                at 2024-07-30T05:04:48.856Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

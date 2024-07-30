@@ -1,13 +1,13 @@
 import { UINT_128_MAX, hash } from "starknet";
 import { BeastEncounter, Item } from "../type";
 import { BeastManager } from "./beasts";
-import { SurvivorManager } from "./survivor";
-import { LootManager } from "./loot";
+import { Survivor } from "./survivor";
+// import { LootManager } from "./loot";
 
 export class PredictionManager {
   private beasts: BeastManager = new BeastManager();
-  private survivor: SurvivorManager = new SurvivorManager();
-  private lootManager: LootManager = new LootManager();
+  private survivor: Survivor = new Survivor();
+  // private lootManager: LootManager = new LootManager();
 
   constructor() {}
 
@@ -137,8 +137,7 @@ export class PredictionManager {
 
     if (adventurerArmor) {
       base_armor =
-        this.survivor.calculateLevel(adventurerArmor?.xp!) *
-        (6 - adventurerArmor?.tier!);
+        this.survivor.calculateLevel() * (6 - adventurerArmor?.tier!);
       elemental_damage = this.beasts.elementalAdjustedDamage(
         base_attack,
         type,
@@ -185,7 +184,7 @@ export class PredictionManager {
     const ambush_location = this.getAttackLocation(rnd2);
     const roll = this.abilityBasedAvoidThreat(level, seed);
     const xp_reward = this.getXpReward(beast_level, BigInt(beast_tier.tier));
-    const specialName = this.lootManager.getSpecialName(seed);
+    // const specialName = this.lootManager.getSpecialName(seed);
     const criticalMultiplier = this.criticalMultiplier(10, rnd2);
 
     const adventurerArmor = items?.find(
@@ -211,7 +210,7 @@ export class PredictionManager {
       location: ambush_location,
       dodgeRoll: Number(roll) + 1,
       nextXp: xp + Number(xp_reward),
-      specialName,
+      specialName: "",
       criticalMultiplier,
       damage,
     };

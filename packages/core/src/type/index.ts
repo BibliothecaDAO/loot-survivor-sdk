@@ -107,37 +107,37 @@ export interface BattleEvent {
   location?: string;
 }
 
-// export interface Adventurer {
-//   id: number;
-//   beastHealth: number;
-//   charisma: number;
-//   chest: string;
-//   createdTime: string;
-//   dexterity: number;
-//   entropy: string;
-//   foot: string;
-//   gold: number;
-//   hand: string;
-//   head: string;
-//   health: number;
-//   intelligence: number;
-//   lastUpdatedTime: string;
-//   luck: number;
-//   name: string;
-//   neck: string;
-//   owner: string;
-//   revealBlock: number;
-//   ring: string;
-//   startEntropy: string;
-//   statUpgrades: number;
-//   strength: number;
-//   timestamp: string;
-//   vitality: number;
-//   waist: string;
-//   weapon: string;
-//   wisdom: number;
-//   xp: number;
-// }
+export interface AdventurerComplete {
+  id: number;
+  beastHealth: number;
+  charisma: number;
+  chest: string;
+  createdTime: string;
+  dexterity: number;
+  entropy: string;
+  foot: string;
+  gold: number;
+  hand: string;
+  head: string;
+  health: number;
+  intelligence: number;
+  lastUpdatedTime: string;
+  luck: number;
+  name: string;
+  neck: string;
+  owner: string;
+  revealBlock: number;
+  ring: string;
+  startEntropy: string;
+  statUpgrades: number;
+  strength: number;
+  timestamp: string;
+  vitality: number;
+  waist: string;
+  weapon: string;
+  wisdom: number;
+  xp: number;
+}
 
 export interface Battle {
   attacker: string;

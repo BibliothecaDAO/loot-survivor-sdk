@@ -17,6 +17,10 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        skulls: "url('/images/bg-skulls.png')",
+      },
+
       fontFamily: {
         azeret: ["Azeret Mono", "monospace"],
       },

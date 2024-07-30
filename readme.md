@@ -13,7 +13,7 @@ Currently the only package is the `core` which is vanilla.js of the following:
 - [x] Execution client
 - [x] Game Constants
 - [x] Hosted Images
-- [] Zustand State
+- [x] Zustand State
 - [] Abstracted Graphql queries for deep information
 - [] gPRC provider
 - [] React Package
@@ -35,7 +35,7 @@ await survivor.newGame();
 
 // Selective Managers - These contain all logic to use along with images
 const beastsManager = new BeastManager();
-const lootManager = new LootManager();
+const lootManager = new LootManager(id, xp, seed); // will tell you what your item will become
 const obstacleManager = new ObstacleManager();
 
 // usage

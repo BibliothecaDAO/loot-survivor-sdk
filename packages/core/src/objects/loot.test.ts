@@ -84,7 +84,7 @@ describe("LootManager", () => {
       const result = lootManager.getFullItemName();
 
       expect(result).toBe(
-        "Instrument Loath Katana Of The Fox (Dexterity +2 Charisma +1)"
+        "Whisper Lights Pendant Of Anger (Strength +2 Dexterity +1)"
       );
     });
   });

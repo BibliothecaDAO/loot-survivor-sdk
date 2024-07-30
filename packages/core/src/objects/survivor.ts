@@ -15,7 +15,7 @@ import {
   Battle,
   Discovery,
   SELECTORS,
-  Loot,
+  // Loot,
 } from "../type";
 
 import * as EventTypes from "../type/events";

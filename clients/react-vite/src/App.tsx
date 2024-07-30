@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { LandingPage } from "./components/pages/LandingPage";
+import { Button } from "./components/ui/button";
 
-import "./App.css";
-
-import { useGameStateStore } from "@lootsurvivor/core";
+import { useSurvivorState } from "./hooks/useSurvivorState";
+import { useConnect } from "@starknet-react/core";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { survivor } = useSurvivorState();
 
-  const { gameState } = useGameStateStore.getState();
-
-  return <></>;
+  return (
+    <>
+      <LandingPage />
+    </>
+  );
 }
 
 export default App;
