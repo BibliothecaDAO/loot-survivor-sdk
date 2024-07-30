@@ -1,3 +1,9 @@
+import {
+  ITEM_BASE_PRICE,
+  ITEM_CHARISMA_DISCOUNT,
+  ITEM_MINIMUM_PRICE,
+  POTION_BASE_PRICE,
+} from "../constants";
 import { useSurvivorStore } from "../state";
 import {
   Stats,
@@ -9,14 +15,21 @@ import {
   Battle,
   Discovery,
   SELECTORS,
+  Loot,
 } from "../type";
 
 import * as EventTypes from "../type/events";
+import { BeastManager } from "./beasts";
+import { LootManager } from "./loot";
 
 export class Survivor {
+  private beasts: BeastManager = new BeastManager();
+  private previousState: Partial<Survivor> | null = null;
+
   id: number | null = null;
   name: number | null = null;
   owner: string | null = null;
+  statUpgradesAvailable: number = 0;
   stats: Stats = {
     strength: 0,
     dexterity: 0,
@@ -58,10 +71,126 @@ export class Survivor {
 
   constructor() {}
 
+  getItemsWithBoosts(): Record<ItemSlot, LootManager> {
+    return {
+      [ItemSlot.Weapon]: new LootManager(
+        parseInt(this.items[ItemSlot.Weapon]?.item!) ?? null,
+        this.items[ItemSlot.Weapon]?.xp ?? 0,
+        BigInt(this.adventurerEntropy ?? "0")
+      ),
+      [ItemSlot.Chest]: new LootManager(
+        parseInt(this.items[ItemSlot.Chest]?.item!) ?? null,
+        this.items[ItemSlot.Chest]?.xp ?? 0,
+        BigInt(this.adventurerEntropy ?? "0")
+      ),
+      [ItemSlot.Head]: new LootManager(
+        parseInt(this.items[ItemSlot.Head]?.item!) ?? null,
+        this.items[ItemSlot.Head]?.xp ?? 0,
+        BigInt(this.adventurerEntropy ?? "0")
+      ),
+      [ItemSlot.Waist]: new LootManager(
+        parseInt(this.items[ItemSlot.Waist]?.item!) ?? null,
+        this.items[ItemSlot.Waist]?.xp ?? 0,
+        BigInt(this.adventurerEntropy ?? "0")
+      ),
+      [ItemSlot.Foot]: new LootManager(
+        parseInt(this.items[ItemSlot.Foot]?.item!) ?? null,
+        this.items[ItemSlot.Foot]?.xp ?? 0,
+        BigInt(this.adventurerEntropy ?? "0")
+      ),
+      [ItemSlot.Hand]: new LootManager(
+        parseInt(this.items[ItemSlot.Hand]?.item!) ?? null,
+        this.items[ItemSlot.Hand]?.xp ?? 0,
+        BigInt(this.adventurerEntropy ?? "0")
+      ),
+      [ItemSlot.Neck]: new LootManager(
+        parseInt(this.items[ItemSlot.Neck]?.item!) ?? null,
+        this.items[ItemSlot.Neck]?.xp ?? 0,
+        BigInt(this.adventurerEntropy ?? "0")
+      ),
+      [ItemSlot.Ring]: new LootManager(
+        parseInt(this.items[ItemSlot.Ring]?.item!) ?? null,
+        this.items[ItemSlot.Ring]?.xp ?? 0,
+        BigInt(this.adventurerEntropy ?? "0")
+      ),
+    };
+  }
+
+  setOptimisticState(newState: Partial<Survivor>): void {
+    // Store the current state
+    this.previousState = {
+      health: this.health,
+      maxHealth: this.maxHealth,
+      xp: this.xp,
+      level: this.level,
+      gold: this.gold,
+      stats: { ...this.stats },
+      items: { ...this.items },
+      bag: this.bag,
+      beast: this.beast,
+      battle: this.battle,
+    };
+
+    // Apply the new state
+    Object.assign(this, newState);
+
+    // Update derived properties
+    this.maxHealth = this.calculateMaxHealth();
+    this.level = this.calculateLevel();
+
+    // Update the store
+    this.updateStore();
+  }
+
+  revertOptimisticState(): void {
+    if (this.previousState) {
+      Object.assign(this, this.previousState);
+      this.previousState = null;
+      this.updateStore();
+    }
+  }
+
+  confirmOptimisticState(): void {
+    // Clear the previous state
+    this.previousState = null;
+  }
+
   updateFromEvents(events: { name: string; event: any }[]): void {
     for (const event of events) {
       this.updateFromEvent(event);
     }
+  }
+
+  getItemPrice(tier: number) {
+    const price =
+      (6 - tier) * ITEM_BASE_PRICE -
+      ITEM_CHARISMA_DISCOUNT * this.stats.charisma;
+    if (price < ITEM_MINIMUM_PRICE) {
+      return ITEM_MINIMUM_PRICE;
+    } else {
+      return price;
+    }
+  }
+
+  getPotionPrice() {
+    return Math.max(
+      this.calculateLevel() - POTION_BASE_PRICE * this.stats.charisma,
+      1
+    );
+  }
+
+  checkAvailableSlots(): boolean {
+    const equippedItemsCount = Object.values(this.items).filter(
+      (item) => item.xp !== undefined
+    ).length;
+    const bagItemsCount = this.bag
+      ? Object.keys(this.bag).filter((key) => key !== "mutated").length
+      : 0;
+    const totalItemsCount = equippedItemsCount + bagItemsCount;
+
+    const maxItemSlots = 20; // Assuming the maximum is still 20
+
+    return totalItemsCount < maxItemSlots;
   }
 
   updateFromEvent(event: { name: string; event: any }): void {
@@ -109,16 +238,16 @@ export class Survivor {
           event.event as EventTypes.HitByObstacleEvent
         );
         break;
-      // case "DiscoveredBeastEvent":
-      //   this.handleDiscoveredBeastEvent(
-      //     event as EventTypes.DiscoveredBeastEvent
-      //   );
-      //   break;
-      // case "AmbushedByBeastEvent":
-      //   this.handleAmbushedByBeastEvent(
-      //     event as EventTypes.AmbushedByBeastEvent
-      //   );
-      //   break;
+      case SELECTORS.DiscoveredBeast:
+        this.handleDiscoveredBeastEvent(
+          event.event as EventTypes.DiscoveredBeastEvent
+        );
+        break;
+      case SELECTORS.AmbushedByBeast:
+        this.handleAmbushedByBeastEvent(
+          event.event as EventTypes.AmbushedByBeastEvent
+        );
+        break;
       case SELECTORS.AttackedBeast:
         this.handleAttackedBeastEvent(
           event.event as EventTypes.AttackedBeastEvent
@@ -216,8 +345,6 @@ export class Survivor {
     const { adventurerStateWithBag } = event;
     this.updateFromAdventurerState(adventurerStateWithBag.adventurerState);
     this.bag = adventurerStateWithBag.bag;
-
-    // You might want to store or use the stat increases
   }
 
   private handleDiscoveredHealthEvent(
@@ -240,7 +367,6 @@ export class Survivor {
     event: EventTypes.DiscoveredLootEvent
   ): void {
     this.updateFromAdventurerState(event.adventurerState);
-    // Handle the discovered item (you might want to add it to the bag or equipment)
   }
 
   private handleEquipmentChangedEvent(
@@ -250,72 +376,67 @@ export class Survivor {
       event.adventurerStateWithBag.adventurerState
     );
     this.bag = event.adventurerStateWithBag.bag;
-    // Update equipment based on equippedItems, baggedItems, and droppedItems
   }
 
   private handleDodgedObstacleEvent(
     event: EventTypes.DodgedObstacleEvent
   ): void {
     this.updateFromAdventurerState(event.adventurerState);
-    this.addXp(event.xpEarnedAdventurer);
-    // Handle xpEarnedItems if needed
   }
 
   private handleHitByObstacleEvent(event: EventTypes.HitByObstacleEvent): void {
     this.updateFromAdventurerState(event.adventurerState);
-    this.takeDamage(event.damageTaken);
-    this.addXp(event.xpEarnedAdventurer);
-    // Handle xpEarnedItems if needed
   }
 
-  // private handleDiscoveredBeastEvent(
-  //   event: EventTypes.DiscoveredBeastEvent
-  // ): void {
-  //   this.updateFromAdventurerState(event.adventurerState);
-  //   this.beast = {
-  //     id: event.id,
-  //     seed: event.seed,
-  //     specs: event.beastSpecs,
-  //   };
-  // }
+  private handleDiscoveredBeastEvent(
+    event: EventTypes.DiscoveredBeastEvent
+  ): void {
+    this.updateFromAdventurerState(event.adventurerState);
 
-  // private handleAmbushedByBeastEvent(
-  //   event: EventTypes.AmbushedByBeastEvent
-  // ): void {
-  //   this.updateFromAdventurerState(event.adventurerState);
-  //   this.takeDamage(event.damage);
-  //   this.beast = {
-  //     beast: event.id.toString(),
-  //     seed: event.seed.toString(),
-  //     specs: event.beastSpecs,
-  //   };
-  // }
+    this.beast = this.createBeastObject(event);
+    this.battle = this.createBattleObject(event, "adventurer");
+  }
+
+  private handleAmbushedByBeastEvent(
+    event: EventTypes.AmbushedByBeastEvent
+  ): void {
+    this.updateFromAdventurerState(event.adventurerState);
+    this.takeDamage(event.damage);
+
+    this.beast = this.createBeastObject(event);
+    this.battle = this.createBattleObject(event, "beast");
+  }
 
   private handleAttackedBeastEvent(event: EventTypes.AttackedBeastEvent): void {
     this.updateFromAdventurerState(event.adventurerState);
-    // Update beast health or state if needed
+
+    this.beast = this.createBeastObject(event);
+    this.battle = this.createBattleObject(event, "adventurer");
   }
 
   private handleAttackedByBeastEvent(
     event: EventTypes.AttackedByBeastEvent
   ): void {
     this.updateFromAdventurerState(event.adventurerState);
+
+    this.beast = this.createBeastObject(event);
+    this.battle = this.createBattleObject(event, "beast");
   }
 
   private handleSlayedBeastEvent(event: EventTypes.SlayedBeastEvent): void {
     this.updateFromAdventurerState(event.adventurerState);
     this.beast = null;
-    // Handle xpEarnedItems if needed
+    this.battle = null;
   }
 
   private handleFleeFailedEvent(event: EventTypes.FleeFailedEvent): void {
     this.updateFromAdventurerState(event.adventurerState);
-    // The beast remains, possibly update its state
   }
 
   private handleFleeSucceededEvent(event: EventTypes.FleeSucceededEvent): void {
     this.updateFromAdventurerState(event.adventurerState);
     this.beast = null;
+    this.battle = null;
   }
 
   private handlePurchasedItemsEvent(
@@ -325,15 +446,12 @@ export class Survivor {
       event.adventurerStateWithBag.adventurerState
     );
     this.bag = event.adventurerStateWithBag.bag;
-    // Handle purchased items (add to bag or equipment)
   }
 
   private handlePurchasedPotionsEvent(
     event: EventTypes.PurchasedPotionsEvent
   ): void {
     this.updateFromAdventurerState(event.adventurerState);
-    this.gold -= event.cost;
-    this.heal(event.health);
   }
 
   private handleEquippedItemsEvent(event: EventTypes.EquippedItemsEvent): void {
@@ -396,6 +514,53 @@ export class Survivor {
     this.maxHealth = this.calculateMaxHealth();
     this.level = this.calculateLevel();
     this.adventurerEntropy = state.adventurerEntropy;
+    this.statUpgradesAvailable = state.adventurer.statUpgradesAvailable;
+  }
+
+  private createBeastObject(event: any): Beast {
+    return {
+      beast: this.beasts.getBeastName(event.id),
+      createdTime: new Date().getTime().toString(),
+      seed: event.seed.toString(),
+      level: event.beastSpecs.level,
+      slainOnTime: null,
+      special1: event.beastSpecs.specials.special1,
+      special2: event.beastSpecs.specials.special2,
+      special3: event.beastSpecs.specials.special3,
+      adventurerId: this.id as number,
+      lastUpdatedTime: new Date().getTime().toString(),
+      health: event.adventurerState.adventurer.beastHealth,
+      timestamp: new Date().getTime().toString(),
+    };
+  }
+
+  private createBattleObject(
+    event: any,
+    attacker: "adventurer" | "beast"
+  ): Battle {
+    return {
+      attacker,
+      adventurerId: this.id as number,
+      beast: this.beasts.getBeastName(event.id),
+      beastHealth: event.adventurerState.adventurer.beastHealth,
+      beastLevel: event.beastSpecs.level,
+      blockTime: new Date().toISOString(),
+      criticalHit: event.criticalHit,
+      damageDealt: attacker === "adventurer" ? event.damage : 0,
+      damageLocation: event.location.toString(),
+      damageTaken: attacker === "beast" ? event.damage : 0,
+      discoveryTime: new Date().toISOString(),
+      fled: false,
+      goldEarned: 0,
+      seed: event.seed.toString(),
+      special1: event.beastSpecs.specials.special1,
+      special2: event.beastSpecs.specials.special2,
+      special3: event.beastSpecs.specials.special3,
+      timestamp: new Date().getTime().toString(),
+      txHash: "",
+      xpEarnedAdventurer: 0,
+      xpEarnedItems: 0,
+    };
   }
 
   private convertEquipmentToItems(

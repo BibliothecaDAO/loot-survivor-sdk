@@ -13,22 +13,87 @@ import {
 } from "../type";
 
 export class LootManager {
-  constructor() {}
+  private static TWO_POW_64 = BigInt("0x10000000000000000");
+  private static NUM_ITEMS = 101;
 
-  getItemName(item: Loot): string {
-    return Loot[item];
+  private static SUFFIX_UNLOCK_GREATNESS = 15;
+  private static PREFIXES_UNLOCK_GREATNESS = 19;
+
+  private item: Loot;
+  private xp: number;
+  private seed: bigint;
+
+  constructor(item: Loot, xp: number, seed: bigint) {
+    this.item = item;
+    this.xp = xp;
+    this.seed = seed;
+  }
+
+  getFullItemName(): string {
+    const itemName = this.getItemName();
+    const specials = this.getSpecials(
+      this.item,
+      this.calculateGreatness(this.xp),
+      this.seed
+    );
+
+    let name = itemName;
+
+    if (specials.special1 !== 0) {
+      const suffix = this.getItemSuffixName(specials.special1);
+      const boostString = this.getItemSuffixBoostString(specials.special1);
+      name += ` ${suffix} (${boostString})`;
+    }
+
+    if (specials.special2 !== 0) {
+      const prefix1 = this.getItemNamePrefix(specials.special2);
+      name = `${prefix1} ${name}`;
+    }
+
+    if (specials.special3 !== 0) {
+      const prefix2 = this.getItemNameSuffix(specials.special3);
+      name = `${prefix2} ${name}`;
+    }
+
+    return name.trim();
+  }
+
+  private getSpecials(
+    item: Loot,
+    greatness: number,
+    seed: bigint
+  ): { special1: number; special2: number; special3: number } {
+    if (greatness < LootManager.SUFFIX_UNLOCK_GREATNESS) {
+      return { special1: 0, special2: 0, special3: 0 };
+    } else if (greatness < LootManager.PREFIXES_UNLOCK_GREATNESS) {
+      return {
+        special1: this.getItemSuffix(item, seed),
+        special2: 0,
+        special3: 0,
+      };
+    } else {
+      return {
+        special1: this.getItemSuffix(item, seed),
+        special2: this.getPrefix1(item, seed),
+        special3: this.getPrefix2(item, seed),
+      };
+    }
+  }
+
+  getItemName(): string {
+    return Loot[this.item];
   }
 
   getItemNumber(itemName: string): Loot | undefined {
     return Loot[itemName as keyof typeof Loot];
   }
 
-  getItemType(item: Loot): ItemType {
-    return ITEM_TYPES[item];
+  getItemType(): ItemType {
+    return ITEM_TYPES[this.item];
   }
 
-  getItemSlot(item: Loot): ItemSlot {
-    return ITEM_SLOTS[item];
+  getItemSlot(): ItemSlot {
+    return ITEM_SLOTS[this.item];
   }
 
   getItemNamePrefix(prefix: ItemNamePrefix): string {
@@ -47,13 +112,50 @@ export class LootManager {
     return ItemNameSuffix[suffixName as keyof typeof ItemNameSuffix];
   }
 
-  getItemSuffix(suffix: ItemSuffix): string {
+  getItemSuffix(itemId: number, seed: bigint): ItemSuffix {
+    const namingSeed = this.generateNamingSeed(itemId, seed);
+    const suffixIndex = Number(
+      (namingSeed % BigInt(Object.keys(ItemSuffix).length / 2)) + BigInt(1)
+    );
+    return suffixIndex as ItemSuffix;
+  }
+
+  private generateNamingSeed(itemId: number, seed: bigint): bigint {
+    const nameSeedU64 = seed % LootManager.TWO_POW_64;
+
+    let itemEntropy: bigint;
+    const sum = nameSeedU64 + BigInt(itemId);
+    if (sum < LootManager.TWO_POW_64) {
+      itemEntropy = sum;
+    } else {
+      itemEntropy = nameSeedU64 - BigInt(itemId);
+    }
+
+    const rnd = itemEntropy % BigInt(LootManager.NUM_ITEMS);
+    return (
+      rnd * BigInt(this.getSlotLength(this.getSlot(itemId))) + BigInt(itemId)
+    );
+  }
+
+  getItemSuffixName(suffix: ItemSuffix): string {
     return ItemSuffix[suffix].replace(/([A-Z])/g, " $1").trim();
+  }
+
+  private getSlot(itemId: number): ItemSlot {
+    return ITEM_SLOTS[itemId as Loot];
+  }
+
+  private getSlotLength(slot: ItemSlot): number {
+    return Object.values(ITEM_SLOTS).filter((s) => s === slot).length;
   }
 
   getItemSuffixNumber(suffixName: string): ItemSuffix | undefined {
     const formattedName = suffixName.replace(/\s+/g, "");
     return ItemSuffix[formattedName as keyof typeof ItemSuffix];
+  }
+
+  calculateGreatness(xp: number) {
+    return Math.max(Math.floor(Math.sqrt(xp)), 1);
   }
 
   getItemSuffixBoost(suffix: ItemSuffix): StatBoost {
@@ -77,18 +179,20 @@ export class LootManager {
     return NUMBER_TO_ITEM_SLOT[number];
   }
 
-  getSpecialName(seed: bigint): string {
-    const prefixKeys = Object.keys(ItemNamePrefix) as Array<
-      keyof typeof ItemNamePrefix
-    >;
-    const suffixKeys = Object.keys(ItemNameSuffix) as Array<
-      keyof typeof ItemNameSuffix
-    >;
-    const prefixIndex = Number(seed % BigInt(prefixKeys.length - 1)) + 1;
-    const suffixIndex = Number(
-      (seed >> BigInt(32)) % BigInt(suffixKeys.length)
+  getPrefix1(itemId: number, seed: bigint): ItemNamePrefix {
+    const namingSeed = this.generateNamingSeed(itemId, seed);
+    const prefixIndex = Number(
+      (namingSeed % BigInt(Object.keys(ItemNamePrefix).length / 2)) + BigInt(1)
     );
-    return `${ItemNamePrefix[prefixKeys[prefixIndex]]} ${ItemNameSuffix[suffixKeys[suffixIndex]]}`;
+    return prefixIndex as ItemNamePrefix;
+  }
+
+  getPrefix2(itemId: number, seed: bigint): ItemNameSuffix {
+    const namingSeed = this.generateNamingSeed(itemId, seed);
+    const suffixIndex = Number(
+      (namingSeed % BigInt(Object.keys(ItemNameSuffix).length / 2)) + BigInt(1)
+    );
+    return suffixIndex as ItemNameSuffix;
   }
 }
 

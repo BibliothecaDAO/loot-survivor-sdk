@@ -71,6 +71,10 @@ export interface Item {
   xp?: number;
   level?: number;
   tier?: number;
+  cost?: number;
+  purchaseTime?: string;
+  equipped?: string;
+  special1?: string;
   special2?: string;
   special3?: string;
 }

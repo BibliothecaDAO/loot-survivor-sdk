@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { LootManager } from "./loot";
 import {
   Loot,
@@ -12,10 +12,10 @@ import {
 } from "../type";
 
 describe("LootManager", () => {
-  const lootManager = new LootManager();
+  const lootManager = new LootManager(Loot.Pendant, 1000, BigInt(1234567));
 
   it("should return the correct item name", () => {
-    expect(lootManager.getItemName(Loot.Pendant)).toBe("Pendant");
+    expect(lootManager.getItemName()).toBe("Pendant");
   });
 
   it("should return the correct item number", () => {
@@ -23,11 +23,11 @@ describe("LootManager", () => {
   });
 
   it("should return the correct item type", () => {
-    expect(lootManager.getItemType(Loot.Pendant)).toBe(ItemType.Necklace);
+    expect(lootManager.getItemType()).toBe(ItemType.Necklace);
   });
 
   it("should return the correct item slot", () => {
-    expect(lootManager.getItemSlot(Loot.Pendant)).toBe(ItemSlot.Neck);
+    expect(lootManager.getItemSlot()).toBe(ItemSlot.Neck);
   });
 
   it("should return the correct item name prefix", () => {
@@ -48,10 +48,6 @@ describe("LootManager", () => {
     expect(lootManager.getItemNameSuffixNumber("Bane")).toBe(
       ItemNameSuffix.Bane
     );
-  });
-
-  it("should return the correct item suffix", () => {
-    expect(lootManager.getItemSuffix(ItemSuffix.OfAnger)).toBe("Of Anger");
   });
 
   it("should return the correct item suffix number", () => {
@@ -81,10 +77,15 @@ describe("LootManager", () => {
   it("should return the correct item slot from number", () => {
     expect(lootManager.getItemSlotFromNumber(1)).toBe(ItemSlot.Weapon);
   });
+  describe("getFullItemName", () => {
+    it("should return a full item name with all components", () => {
+      // Mock the necessary methods
 
-  it("should return the correct special name", () => {
-    const seed = BigInt(123456789);
-    const specialName = lootManager.getSpecialName(seed);
-    expect(specialName).toBe("Victory Bane");
+      const result = lootManager.getFullItemName();
+
+      expect(result).toBe(
+        "Instrument Loath Katana Of The Fox (Dexterity +2 Charisma +1)"
+      );
+    });
   });
 });
