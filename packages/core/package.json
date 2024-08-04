@@ -30,5 +30,6 @@
     },
     "devDependencies": {
         "@vitest/coverage-v8": "^2.0.2"
-    }
+    },
+    "gitHead": "1bfc739aed9c4dd7e0f0713adbebafdfc6f2bd06"
 }

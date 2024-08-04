@@ -1,0 +1,18 @@
+35 error Error: Command failed with exit code 1: pnpm install --lockfile-only --ignore-scripts
+35 error Scope: all 4 workspace projects
+35 error  WARN  `node_modules` is present. Lockfile only installation will make it out-of-date
+35 error Progress: resolved 1, reused 0, downloaded 0, added 0
+35 error Progress: resolved 58, reused 0, downloaded 0, added 0
+35 error /Users/os/Documents/code/biblio/lssdk/packages/react:
+35 error  ERR_PNPM_FETCH_404  GET https://registry.npmjs.org/@lootsurvivor%2Fcore: Not Found - 404
+35 error
+35 error This error happened while installing a direct dependency of /Users/os/Documents/code/biblio/lssdk/packages/react
+35 error
+35 error @lootsurvivor/core is not in the npm registry, or you have no permission to fetch it.
+35 error
+35 error An authorization header was used: Bearer npm_[hidden]
+35 error     at makeError (/Users/os/Documents/code/biblio/lssdk/node_modules/.pnpm/execa@5.0.0/node_modules/execa/lib/error.js:59:11)
+35 error     at handlePromise (/Users/os/Documents/code/biblio/lssdk/node_modules/.pnpm/execa@5.0.0/node_modules/execa/index.js:114:26)
+35 error     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+35 error     at async VersionCommand.updatePackageVersions (/Users/os/Documents/code/biblio/lssdk/node_modules/.pnpm/lerna@8.1.7_encoding@0.1.13/node_modules/lerna/dist/index.js:9836:11)
+35 error     at async Promise.all (index 0)
