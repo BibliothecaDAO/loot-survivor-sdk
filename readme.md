@@ -6,7 +6,9 @@
 
 This SDK enables easy creation of Loot Survivor experiences. It provides everything you need to build a fully functioning client for Loot Survivor.
 
-Currently the only package is the `core` which is vanilla.js of the following:
+```
+pnpm add @lootsurvivor/core @lootsurvivor/react
+```
 
 ## Features
 
@@ -14,9 +16,9 @@ Currently the only package is the `core` which is vanilla.js of the following:
 -   [x] Game Constants
 -   [x] Hosted Images
 -   [x] Zustand State
--   [] Abstracted Graphql queries for deep information
+-   [x] Abstracted Graphql queries for deep information
 -   [] gPRC provider
--   [] React Package
+-   [x] React Package
 
 ## Usage
 
