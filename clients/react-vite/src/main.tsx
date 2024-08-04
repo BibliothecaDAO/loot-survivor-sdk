@@ -5,9 +5,9 @@ import "./index.css";
 import { StarknetProvider } from "@/components/providers/StarknetProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <StarknetProvider>
-      <App />
-    </StarknetProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <StarknetProvider>
+            <App />
+        </StarknetProvider>
+    </React.StrictMode>
 );

@@ -10,27 +10,27 @@ import { devtools } from "zustand/middleware";
 import { Survivor } from "../objects/survivor";
 
 export interface SurvivorStore {
-  survivor: Survivor | null;
-  updateSurvivor: (updates: Survivor) => void;
-  clearSurvivor: () => void;
-  newSurvivor: () => void;
+    survivor: Survivor | null;
+    updateSurvivor: (updates: Survivor) => void;
+    clearSurvivor: () => void;
+    newSurvivor: () => void;
 }
 
 export const useSurvivorStore = createStore<SurvivorStore>()(
-  devtools(
-    (set) => ({
-      survivor: null,
-      newSurvivor: () => {
-        set(() => {
-          return { survivor: new Survivor() };
-        });
-      },
-      clearSurvivor: () => set({ survivor: null }),
-      updateSurvivor: (survivor: Survivor) =>
-        set(() => {
-          return { survivor };
+    devtools(
+        (set) => ({
+            survivor: null,
+            newSurvivor: () => {
+                set(() => {
+                    return { survivor: new Survivor() };
+                });
+            },
+            clearSurvivor: () => set({ survivor: null }),
+            updateSurvivor: (survivor: Survivor) =>
+                set(() => {
+                    return { survivor };
+                }),
         }),
-    }),
-    { name: "Survivor Store" }
-  )
+        { name: "Survivor Store" }
+    )
 );

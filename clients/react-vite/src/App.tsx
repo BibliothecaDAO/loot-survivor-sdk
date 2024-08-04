@@ -5,13 +5,13 @@ import { useSurvivorState } from "./hooks/useSurvivorState";
 import { useConnect } from "@starknet-react/core";
 
 function App() {
-  const { survivor } = useSurvivorState();
+    const { survivor } = useSurvivorState();
 
-  return (
-    <>
-      <LandingPage />
-    </>
-  );
+    return (
+        <>
+            <LandingPage />
+        </>
+    );
 }
 
 export default App;

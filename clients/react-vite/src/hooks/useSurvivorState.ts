@@ -1,7 +1,7 @@
 import { useSurvivorStore } from "@lootsurvivor/core";
 
 export const useSurvivorState = () => {
-  const { survivor } = useSurvivorStore.getState();
+    const { survivor } = useSurvivorStore.getState();
 
-  return { survivor };
+    return { survivor };
 };

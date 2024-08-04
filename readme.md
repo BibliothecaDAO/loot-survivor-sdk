@@ -10,24 +10,24 @@ Currently the only package is the `core` which is vanilla.js of the following:
 
 ## Features
 
-- [x] Execution client
-- [x] Game Constants
-- [x] Hosted Images
-- [x] Zustand State
-- [] Abstracted Graphql queries for deep information
-- [] gPRC provider
-- [] React Package
+-   [x] Execution client
+-   [x] Game Constants
+-   [x] Hosted Images
+-   [x] Zustand State
+-   [] Abstracted Graphql queries for deep information
+-   [] gPRC provider
+-   [] React Package
 
 ## Usage
 
 ```js
 // Full Provider which exposes all the Managers along with an execution client
 const survivor = new LootSurvivor(
-  nodeUrl,
-  lootSurvivorAddress,
-  beastsAddress,
-  goldenTokenAddress,
-  account
+    nodeUrl,
+    lootSurvivorAddress,
+    beastsAddress,
+    goldenTokenAddress,
+    account
 );
 
 // usage

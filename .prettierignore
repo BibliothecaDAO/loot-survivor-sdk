@@ -1,0 +1,16 @@
+**/*/target
+**/*/dist
+packages/torii-client/wasm
+packages/torii-client/pkg
+packages/torii-wasm/pkg/
+packages/utils-wasm/pkg/
+
+examples/dojo-starter
+packages/create-dojo
+
+# ignore lock files
+**/*-lock.yaml
+package-lock.json
+dev-dist
+
+**/CHANGELOG.md

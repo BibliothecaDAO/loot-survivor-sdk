@@ -1,13 +1,16 @@
 {
-  "name": "@lootsurvivor",
-  "scripts": {
-    "build": "pnpm --dir packages/core build",
-    "test": "pnpm --dir packages/core test"
-  },
-  "devDependencies": {
-    "husky": "^9.0.11",
-    "lerna": "^8.1.5",
-    "prettier": "^3.0.3",
-    "tsup": "^8.1.0"
-  }
+    "name": "lootsurvivor",
+    "scripts": {
+        "build": "pnpm --dir packages/core build",
+        "test": "pnpm --dir packages/core test",
+        "prettier-check": "npx prettier --check .",
+        "prettier": "npx prettier --write .",
+        "release": "pnpm build && pnpm prettier && npx lerna publish --no-private --force-publish"
+    },
+    "devDependencies": {
+        "husky": "^9.0.11",
+        "lerna": "^8.1.5",
+        "prettier": "^3.0.3",
+        "tsup": "^8.1.0"
+    }
 }

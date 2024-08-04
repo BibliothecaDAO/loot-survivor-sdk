@@ -1,5 +1,5 @@
 export const S3_BUCKET =
-  "https://loot-survivor.s3.ap-northeast-1.amazonaws.com/";
+    "https://loot-survivor.s3.ap-northeast-1.amazonaws.com/";
 
 export const ITEM_CHARISMA_DISCOUNT = 1;
 export const ITEM_BASE_PRICE = 4;
