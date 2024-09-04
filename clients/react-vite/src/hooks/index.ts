@@ -15,7 +15,6 @@ export const useAdventurersByXPWithScores = ({ page }: { page: number }) => {
         skip: (page - 1) * 10,
     });
 
-    console.log(adventurersQuery.data);
     const adventurerIds =
         adventurersQuery.data?.adventurers.map((adv) => adv.id) || [];
 

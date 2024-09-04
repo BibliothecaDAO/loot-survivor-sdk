@@ -4,6 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/yourusername/loot-survivor-sdk.svg?branch=main)](https://travis-ci.org/yourusername/loot-survivor-sdk)
 
+🚧 WIP: This is an evolving project. We are looking for active contributors.
+
 This SDK enables easy creation of Loot Survivor experiences. It provides everything you need to build a fully functioning client for Loot Survivor.
 
 ```
@@ -12,13 +14,13 @@ pnpm add @lootsurvivor/core @lootsurvivor/react
 
 ## Features
 
--   [x] Execution client
--   [x] Game Constants
--   [x] Hosted Images
--   [x] Zustand State
--   [x] Abstracted Graphql queries for deep information
--   [] gPRC provider
--   [x] React Package
+-   ✅ Execution client
+-   ✅ Game Constants
+-   ✅ Hosted Images
+-   ✅ Abstracted GraphQL queries for deep information
+-   ✅ React Package
+-   🚧 Zustand State Management (WIP)
+-   🚧 gRPC provider (coming soon)
 
 ## Usage
 
