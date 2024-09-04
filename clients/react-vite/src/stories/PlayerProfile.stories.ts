@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
 import "../index.css";
-import ItemBar from "@/components/game/ItemBar";
-import { PlayerTabs } from "@/components/game/PlayerTabs";
 import { PlayerProfile } from "@/components/game/PlayerProfile";
 
 const meta = {

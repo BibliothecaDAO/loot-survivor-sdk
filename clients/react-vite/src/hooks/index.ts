@@ -10,8 +10,6 @@ interface AdventurerWithScore extends AdventurerComplete {
     totalPayout?: number;
 }
 
-const endpoint = "https://ls-indexer-sepolia.provable.games/graphql";
-
 export const useAdventurersByXPWithScores = ({ page }: { page: number }) => {
     const adventurersQuery = useDeadAdventurersByXPPaginated({
         skip: (page - 1) * 10,

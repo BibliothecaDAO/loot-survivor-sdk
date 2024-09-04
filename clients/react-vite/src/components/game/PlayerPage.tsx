@@ -8,17 +8,17 @@ export const PlayerPage = () => {
         {
             label: "Profile",
             value: "profile",
-            icon: <Ring className="w-4" />,
+            icon: <Ring />,
         },
         {
             label: "Inventory",
             value: "inventory",
-            icon: <Ring className="w-4" />,
+            icon: <Ring />,
         },
         {
             label: "Settings",
             value: "settings",
-            icon: <Ring className="w-4" />,
+            icon: <Ring />,
         },
     ];
     return (

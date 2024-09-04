@@ -8,14 +8,11 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { useConnect } from "@starknet-react/core";
 import { useState } from "react";
 import { AnimatedNumber } from "../ui/animatedNumber";
 import { Button } from "../ui/button";
 
 export const LandingPage = () => {
-    const { connect, connectors } = useConnect();
-
     const [page, setPage] = useState(1);
 
     const handlePreviousPage = () => {

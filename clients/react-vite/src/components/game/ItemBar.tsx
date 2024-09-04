@@ -31,7 +31,7 @@ const ItemBar = ({ item }: ItemBarProps) => {
             />
             <div className="relative z-10 flex justify-between">
                 <div className="flex gap-4">
-                    <Ring className="w-4" />
+                    <Ring />
                     <div>{item.name}</div>
                 </div>
 
