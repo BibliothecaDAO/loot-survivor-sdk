@@ -37,7 +37,12 @@ export const LandingPage = () => {
             <div className="self-center sm:w-1/2 text-center uppercase">
                 <div className="flex justify-between">
                     {" "}
-                    <div className="sm:text-5xl mb-8">Leaderboard</div>
+                    <div className="sm:text-3xl mb-8">Leaderboard</div>
+                    <Button>
+                        <a href="https://github.com/BibliothecaDAO/loot-survivor-sdk">
+                            Build
+                        </a>
+                    </Button>
                     <Button>
                         <a href="https://lootsurvivor.io">
                             <span className="line-through">Play</span> Die Now
