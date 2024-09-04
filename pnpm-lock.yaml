@@ -197,7 +197,7 @@ importers:
   packages/react:
     dependencies:
       '@lootsurvivor/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@tanstack/react-query':
         specifier: ^5.51.15

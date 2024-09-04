@@ -1,7 +1,7 @@
 {
     "name": "lootsurvivor",
     "scripts": {
-        "build": "pnpm --dir packages/core build",
+        "build": "pnpm --dir packages/core build && pnpm --dir packages/react build",
         "test": "pnpm --dir packages/core test",
         "prettier-check": "npx prettier --check .",
         "prettier": "npx prettier --write .",

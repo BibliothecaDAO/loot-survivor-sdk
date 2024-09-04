@@ -11,6 +11,7 @@ import {
 import { useConnect } from "@starknet-react/core";
 import { useState } from "react";
 import { AnimatedNumber } from "../ui/animatedNumber";
+import { Button } from "../ui/button";
 
 export const LandingPage = () => {
     const { connect, connectors } = useConnect();
@@ -32,40 +33,53 @@ export const LandingPage = () => {
     const totalPages = 5;
     const startingRank = (page - 1) * itemsPerPage + 1;
 
+    console.log(adventurersWithScores);
+
     return (
         <div className="w-screen h-screen bg-skulls bg-cover bg-no-repeat bg-center flex justify-center">
             <div className="self-center sm:w-1/2 text-center uppercase">
-                <div className="sm:text-5xl mb-8">Leaderboard</div>
-                <div className="bg-black/90 p-10 w-full border border-primary rounded-2xl ">
+                <div className="flex justify-between">
+                    {" "}
+                    <div className="sm:text-5xl mb-8">Leaderboard</div>
+                    <Button>
+                        <a href="https://lootsurvivor.io">
+                            <span className="line-through">Play</span> Die Now
+                        </a>
+                    </Button>
+                </div>
+
+                <div className="bg-black/90 w-full border border-primary rounded-2xl ">
                     <div className="overflow-x-auto ">
                         <table className="w-full">
                             <thead>
                                 <tr>
-                                    <th className="text-xl pb-3 px-4 border-b  border-primary">
+                                    <th className="text-xl p-3 px-4 border-b  border-primary">
                                         Rank
                                     </th>
-                                    <th className="text-xl pb-3 px-4 border-b  border-primary">
+                                    <th className="text-xl p-3 px-4 border-b  border-primary">
                                         Player
                                     </th>
-                                    <th className="text-xl pb-3 px-4 border-b  border-primary">
+                                    <th className="text-xl p-3 px-4 border-b  border-primary">
                                         Score
                                     </th>
-                                    <th className="text-xl pb-3 px-4 border-b  border-primary">
+                                    <th className="text-xl p-3 px-4 border-b  border-primary">
                                         Lords Payout
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td className="p-10">
-                                        {isLoading && (
-                                            <span className="mx-auto">
-                                                Loading...
-                                            </span>
-                                        )}
-                                        {isError && <span>Error</span>}
-                                    </td>
-                                </tr>
+                                {isLoading && (
+                                    <tr>
+                                        <td className="p-10">
+                                            {isLoading && (
+                                                <span className="mx-auto">
+                                                    Loading...
+                                                </span>
+                                            )}
+                                            {isError && <span>Error</span>}
+                                        </td>
+                                    </tr>
+                                )}
 
                                 {adventurersWithScores
                                     ?.slice(0, 1)
@@ -119,7 +133,7 @@ export const LandingPage = () => {
                             </tbody>
                         </table>
                     </div>
-                    <Pagination className="mt-4">
+                    <Pagination className="m-4">
                         <PaginationContent>
                             <PaginationItem>
                                 <PaginationPrevious

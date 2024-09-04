@@ -1,36 +1,27 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { request } from "graphql-request";
 import {
-    getAdventurer,
-    getDiscoveries,
     getLatestDiscoveries,
-    getLastDiscovery,
     getLastBeastDiscovery,
-    getDiscoveryByTxHash,
     getAdventurersByOwner,
+    getAdventurersByOwnerCount,
     getAdventurerById,
     getAdventurersInList,
-    getAdventurersInListByXp,
-    getAdventurerByGold,
-    getBeastsByAdventurer,
     getBeast,
     getKilledBeasts,
-    getLatestBattlesByAdventurer,
     getBattlesByBeast,
-    getLastBattleByAdventurer,
-    getBattlesByAdventurer,
-    getBattleByTxHash,
-    getItems,
-    getItemsByTokenId,
+    getDiscoveriesAndBattlesByAdventurerPaginated,
     getLatestMarketItems,
-    getItemsByOwner,
     getItemsByAdventurer,
-    getAdventurerByXP,
-    getAdventurersByXPPaginated,
-    getTopScores,
+    getDeadAdventurersByXPPaginated,
+    getAliveAdventurersByXPPaginated,
     getScoresInList,
     getGoldenTokensByOwner,
-    getScoresAndAdventurers,
+    getAdventurerCounts,
+    getAliveAdventurersCount,
+    getDiscoveryBattleCount,
+    getAdventurerRank,
+    getCollectionsTotals,
 } from "@lootsurvivor/core";
 import { AdventurerComplete } from "@lootsurvivor/core";
 
@@ -56,13 +47,13 @@ function createQueryHook<TData, TVariables extends object>(
 
 export const useAdventurer = createQueryHook<
     { adventurers: Array<AdventurerComplete> },
-    { owner: string }
->(["adventurer"], getAdventurer);
+    { id: string }
+>(["adventurerById"], getAdventurerById);
 
 export const useDiscoveries = createQueryHook<
     { discoveries: Array<any> },
     { id: string }
->(["discoveries"], getDiscoveries);
+>(["discoveries"], getLatestDiscoveries);
 
 export const useLatestDiscoveries = createQueryHook<
     { discoveries: Array<any> },
@@ -72,7 +63,7 @@ export const useLatestDiscoveries = createQueryHook<
 export const useLastDiscovery = createQueryHook<
     { discoveries: Array<any> },
     { adventurerId: string }
->(["lastDiscovery"], getLastDiscovery);
+>(["lastDiscovery"], getLastBeastDiscovery);
 
 export const useLastBeastDiscovery = createQueryHook<
     { discoveries: Array<any> },
@@ -82,11 +73,11 @@ export const useLastBeastDiscovery = createQueryHook<
 export const useDiscoveryByTxHash = createQueryHook<
     { discoveries: Array<any> },
     { txHash: string }
->(["discoveryByTxHash"], getDiscoveryByTxHash);
+>(["discoveryByTxHash"], getDiscoveriesAndBattlesByAdventurerPaginated);
 
 export const useItems = createQueryHook<{ items: Array<any> }, {}>(
     ["items"],
-    getItems
+    getItemsByAdventurer
 );
 
 export const useAdventurersByOwner = createQueryHook<
@@ -107,22 +98,22 @@ export const useAdventurersInList = createQueryHook<
 export const useAdventurersInListByXp = createQueryHook<
     { adventurers: Array<AdventurerComplete> },
     { ids: string[] }
->(["adventurersInListByXp"], getAdventurersInListByXp);
+>(["adventurersInListByXp"], getAdventurersInList);
 
 export const useAdventurerByGold = createQueryHook<
     { adventurers: Array<AdventurerComplete> },
     {}
->(["adventurerByGold"], getAdventurerByGold);
+>(["adventurerByGold"], getAdventurerById);
 
 export const useAdventurerByXP = createQueryHook<
     { adventurers: Array<AdventurerComplete> },
     {}
->(["adventurerByXP"], getAdventurerByXP);
+>(["adventurerByXP"], getAdventurerById);
 
 export const useAdventurersByXPPaginated = createQueryHook<
     { adventurers: Array<AdventurerComplete> },
     { skip: number }
->(["adventurersByXPPaginated"], getAdventurersByXPPaginated);
+>(["adventurersByXPPaginated"], getAliveAdventurersByXPPaginated);
 
 export const useBeast = createQueryHook<
     { beasts: Array<any> },
@@ -137,17 +128,17 @@ export const useKilledBeasts = createQueryHook<{ beasts: Array<any> }, {}>(
 export const useBeastsByAdventurer = createQueryHook<
     { discoveries: Array<any> },
     { id: string }
->(["beastsByAdventurer"], getBeastsByAdventurer);
+>(["beastsByAdventurer"], getBattlesByBeast);
 
 export const useLatestBattlesByAdventurer = createQueryHook<
     { battles: Array<any> },
     { adventurerId: string }
->(["latestBattlesByAdventurer"], getLatestBattlesByAdventurer);
+>(["latestBattlesByAdventurer"], getBattlesByBeast);
 
 export const useBattlesByAdventurer = createQueryHook<
     { battles: Array<any> },
     { adventurerId: string }
->(["battlesByAdventurer"], getBattlesByAdventurer);
+>(["battlesByAdventurer"], getBattlesByBeast);
 
 export const useBattlesByBeast = createQueryHook<
     { battles: Array<any> },
@@ -157,17 +148,17 @@ export const useBattlesByBeast = createQueryHook<
 export const useLastBattleByAdventurer = createQueryHook<
     { battles: Array<any> },
     { adventurerId: string }
->(["lastBattleByAdventurer"], getLastBattleByAdventurer);
+>(["lastBattleByAdventurer"], getBattlesByBeast);
 
 export const useBattleByTxHash = createQueryHook<
     { battles: Array<any> },
     { txHash: string }
->(["battleByTxHash"], getBattleByTxHash);
+>(["battleByTxHash"], getBattlesByBeast);
 
 export const useItemsByTokenId = createQueryHook<
     { items: Array<any> },
     { item: string }
->(["itemsByTokenId"], getItemsByTokenId);
+>(["itemsByTokenId"], getItemsByAdventurer);
 
 export const useLatestMarketItems = createQueryHook<
     { items: Array<any> },
@@ -182,11 +173,11 @@ export const useItemsByAdventurer = createQueryHook<
 export const useItemsByOwner = createQueryHook<
     { items: Array<any> },
     { owner: string }
->(["itemsByOwner"], getItemsByOwner);
+>(["itemsByOwner"], getItemsByAdventurer);
 
 export const useTopScores = createQueryHook<{ scores: Array<any> }, {}>(
     ["topScores"],
-    getTopScores
+    getScoresInList
 );
 
 export const useScoresInList = createQueryHook<
@@ -202,4 +193,49 @@ export const useGoldenTokensByOwner = createQueryHook<
 export const useScoresAndAdventurers = createQueryHook<
     { scores: Array<any>; adventurers: Array<AdventurerComplete> },
     {}
->(["scoresAndAdventurers"], getScoresAndAdventurers);
+>(["scoresAndAdventurers"], getScoresInList);
+
+export const useAdventurersByOwnerCount = createQueryHook<
+    { countTotalAdventurers: number },
+    { owner: string }
+>(["adventurersByOwnerCount"], getAdventurersByOwnerCount);
+
+export const useDeadAdventurersByXPPaginated = createQueryHook<
+    { adventurers: Array<AdventurerComplete> },
+    { skip: number }
+>(["deadAdventurersByXPPaginated"], getDeadAdventurersByXPPaginated);
+
+export const useAdventurerCounts = createQueryHook<
+    {
+        countAliveAdventurers: number;
+        countDeadAdventurers: number;
+        countTotalAdventurers: number;
+    },
+    {}
+>(["adventurerCounts"], getAdventurerCounts);
+
+export const useAliveAdventurersCount = createQueryHook<
+    { countAliveAdventurers: number },
+    { owner: string }
+>(["aliveAdventurersCount"], getAliveAdventurersCount);
+
+export const useDiscoveryBattleCount = createQueryHook<
+    { countDiscoveriesAndBattles: number },
+    { adventurerId: number }
+>(["discoveryBattleCount"], getDiscoveryBattleCount);
+
+export const useAdventurerRank = createQueryHook<
+    { adventurerRank: { rank: number } },
+    { adventurerId: number; adventurerXp: number }
+>(["adventurerRank"], getAdventurerRank);
+
+export const useCollectionsTotals = createQueryHook<
+    {
+        collectionTotals: Array<{
+            collection: string;
+            gamesPlayed: number;
+            xp: number;
+        }>;
+    },
+    {}
+>(["collectionsTotals"], getCollectionsTotals);

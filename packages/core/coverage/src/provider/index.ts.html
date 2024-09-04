@@ -1,69 +1,68 @@
+
 <!doctype html>
 <html lang="en">
-    <head>
-        <title>Code coverage report for src/provider/index.ts</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="../../prettify.css" />
-        <link rel="stylesheet" href="../../base.css" />
-        <link
-            rel="shortcut icon"
-            type="image/x-icon"
-            href="../../favicon.png"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <style type="text/css">
-            .coverage-summary .sorter {
-                background-image: url(../../sort-arrow-sprite.png);
-            }
-        </style>
-    </head>
 
-    <body>
-        <div class="wrapper">
-            <div class="pad1">
-                <h1>
-                    <a href="../../index.html">All files</a> /
-                    <a href="index.html">src/provider</a> index.ts
-                </h1>
-                <div class="clearfix">
-                    <div class="fl pad1y space-right2">
-                        <span class="strong">0% </span>
-                        <span class="quiet">Statements</span>
-                        <span class="fraction">0/46</span>
-                    </div>
-
-                    <div class="fl pad1y space-right2">
-                        <span class="strong">0% </span>
-                        <span class="quiet">Branches</span>
-                        <span class="fraction">0/1</span>
-                    </div>
-
-                    <div class="fl pad1y space-right2">
-                        <span class="strong">0% </span>
-                        <span class="quiet">Functions</span>
-                        <span class="fraction">0/1</span>
-                    </div>
-
-                    <div class="fl pad1y space-right2">
-                        <span class="strong">0% </span>
-                        <span class="quiet">Lines</span>
-                        <span class="fraction">0/46</span>
-                    </div>
-                </div>
-                <p class="quiet">
-                    Press <em>n</em> or <em>j</em> to go to the next uncovered
-                    block, <em>b</em>, <em>p</em> or <em>k</em> for the previous
-                    block.
-                </p>
-                <template id="filterTemplate">
-                    <div class="quiet">
-                        Filter:
-                        <input type="search" id="fileSearch" />
-                    </div>
-                </template>
+<head>
+    <title>Code coverage report for src/provider/index.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/provider</a> index.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/46</span>
             </div>
-            <div class="status-line low"></div>
-            <pre><table class="coverage">
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/46</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
 <a name='L3'></a><a href='#L3'>3</a>
@@ -186,83 +185,76 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { BeastManager, LootManager, PredictionManager } from "../objects";</span></span></span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { BeastManager, LootManager, PredictionManager } from "../objects";<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
 <span class="cstat-no" title="statement not covered" >import { RpcProvider, Account } from "starknet";</span>
 <span class="cstat-no" title="statement not covered" >import { ExecuteProvider } from "./execute";</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export class LootSurvivor {</span>
-  // modules that can be read
-<span class="cstat-no" title="statement not covered" >  beasts!: BeastManager;</span>
-<span class="cstat-no" title="statement not covered" >  loot!: LootManager;</span>
-<span class="cstat-no" title="statement not covered" >  prediction!: PredictionManager;</span>
+    // modules that can be read
+<span class="cstat-no" title="statement not covered" >    beasts!: BeastManager;</span>
+<span class="cstat-no" title="statement not covered" >    loot!: LootManager;</span>
+<span class="cstat-no" title="statement not covered" >    prediction!: PredictionManager;</span>
 &nbsp;
-  // modules that can be executed
-<span class="cstat-no" title="statement not covered" >  executeProvider!: ExecuteProvider;</span>
+    // modules that can be executed
+<span class="cstat-no" title="statement not covered" >    executeProvider!: ExecuteProvider;</span>
 &nbsp;
-  // addresses
-<span class="cstat-no" title="statement not covered" >  private lootSurvivorAddress!: string;</span>
-<span class="cstat-no" title="statement not covered" >  private beastsAddress!: string;</span>
-<span class="cstat-no" title="statement not covered" >  private goldenTokenAddress!: string;</span>
+    // addresses
+<span class="cstat-no" title="statement not covered" >    private lootSurvivorAddress!: string;</span>
+<span class="cstat-no" title="statement not covered" >    private beastsAddress!: string;</span>
+<span class="cstat-no" title="statement not covered" >    private goldenTokenAddress!: string;</span>
 &nbsp;
-  // accounts and provider
-<span class="cstat-no" title="statement not covered" >  private provider!: RpcProvider;</span>
-<span class="cstat-no" title="statement not covered" >  private account!: Account | undefined;</span>
+    // accounts and provider
+<span class="cstat-no" title="statement not covered" >    private provider!: RpcProvider;</span>
+<span class="cstat-no" title="statement not covered" >    private account!: Account | undefined;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  constructor(</span>
-<span class="cstat-no" title="statement not covered" >    nodeUrl: string,</span>
-<span class="cstat-no" title="statement not covered" >    lootSurvivorAddress: string,</span>
-<span class="cstat-no" title="statement not covered" >    beastsAddress: string,</span>
-<span class="cstat-no" title="statement not covered" >    goldenTokenAddress: string,</span>
-<span class="cstat-no" title="statement not covered" >    account?: Account | undefined</span>
-<span class="cstat-no" title="statement not covered" >  ) {</span>
-<span class="cstat-no" title="statement not covered" >    this.lootSurvivorAddress = lootSurvivorAddress;</span>
-<span class="cstat-no" title="statement not covered" >    this.beastsAddress = beastsAddress;</span>
-<span class="cstat-no" title="statement not covered" >    this.goldenTokenAddress = goldenTokenAddress;</span>
+<span class="cstat-no" title="statement not covered" >    constructor(</span>
+<span class="cstat-no" title="statement not covered" >        nodeUrl: string,</span>
+<span class="cstat-no" title="statement not covered" >        lootSurvivorAddress: string,</span>
+<span class="cstat-no" title="statement not covered" >        beastsAddress: string,</span>
+<span class="cstat-no" title="statement not covered" >        goldenTokenAddress: string,</span>
+<span class="cstat-no" title="statement not covered" >        account?: Account | undefined</span>
+<span class="cstat-no" title="statement not covered" >    ) {</span>
+<span class="cstat-no" title="statement not covered" >        this.lootSurvivorAddress = lootSurvivorAddress;</span>
+<span class="cstat-no" title="statement not covered" >        this.beastsAddress = beastsAddress;</span>
+<span class="cstat-no" title="statement not covered" >        this.goldenTokenAddress = goldenTokenAddress;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    this.provider = new RpcProvider({ nodeUrl });</span>
-<span class="cstat-no" title="statement not covered" >    this.account = account;</span>
+<span class="cstat-no" title="statement not covered" >        this.provider = new RpcProvider({ nodeUrl });</span>
+<span class="cstat-no" title="statement not covered" >        this.account = account;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    this.beasts = new BeastManager();</span>
-<span class="cstat-no" title="statement not covered" >    this.loot = new LootManager();</span>
-<span class="cstat-no" title="statement not covered" >    this.prediction = new PredictionManager();</span>
-<span class="cstat-no" title="statement not covered" >    this.executeProvider = new ExecuteProvider(</span>
-<span class="cstat-no" title="statement not covered" >      this.lootSurvivorAddress,</span>
-<span class="cstat-no" title="statement not covered" >      this.account</span>
-<span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >        this.beasts = new BeastManager();</span>
+<span class="cstat-no" title="statement not covered" >        this.prediction = new PredictionManager();</span>
+<span class="cstat-no" title="statement not covered" >        this.executeProvider = new ExecuteProvider(</span>
+<span class="cstat-no" title="statement not covered" >            this.lootSurvivorAddress,</span>
+<span class="cstat-no" title="statement not covered" >            this.provider,</span>
+<span class="cstat-no" title="statement not covered" >            this.account</span>
+<span class="cstat-no" title="statement not covered" >        );</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  getBeastsAddress(): string {</span>
-<span class="cstat-no" title="statement not covered" >    return this.beastsAddress;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >    getBeastsAddress(): string {</span>
+<span class="cstat-no" title="statement not covered" >        return this.beastsAddress;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  getLootSurvivorAddress(): string {</span>
-<span class="cstat-no" title="statement not covered" >    return this.lootSurvivorAddress;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >    getLootSurvivorAddress(): string {</span>
+<span class="cstat-no" title="statement not covered" >        return this.lootSurvivorAddress;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  getGoldenTokenAddress(): string {</span>
-<span class="cstat-no" title="statement not covered" >    return this.goldenTokenAddress;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >    getGoldenTokenAddress(): string {</span>
+<span class="cstat-no" title="statement not covered" >        return this.goldenTokenAddress;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  getProvider(): RpcProvider {</span>
-<span class="cstat-no" title="statement not covered" >    return this.provider;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >    getProvider(): RpcProvider {</span>
+<span class="cstat-no" title="statement not covered" >        return this.provider;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;</pre></td></tr></table></pre>
 
-            <div class="push"></div>
-            <!-- for sticky footer -->
-        </div>
-        <!-- /wrapper -->
-        <div class="footer quiet pad2 space-top1 center small">
-            Code coverage generated by
-            <a
-                href="https://istanbul.js.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                >istanbul</a
-            >
-            at 2024-07-30T05:04:48.856Z
-        </div>
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2024-09-04T12:41:49.418Z
+            </div>
         <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {
@@ -273,3 +265,4 @@
         <script src="../../block-navigation.js"></script>
     </body>
 </html>
+    

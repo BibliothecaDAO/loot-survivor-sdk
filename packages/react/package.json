@@ -32,7 +32,7 @@
         "typescript": "^5.0.3"
     },
     "dependencies": {
-        "@lootsurvivor/core": "^0.0.1",
+        "@lootsurvivor/core": "workspace:*",
         "@tanstack/react-query": "^5.51.15",
         "get-starknet-core": "^3.2.0",
         "graphql-request": "^7.1.0"

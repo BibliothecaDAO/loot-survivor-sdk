@@ -1,6 +1,6 @@
 import { AdventurerComplete } from "@lootsurvivor/core";
 import {
-    useAdventurersByXPPaginated,
+    useDeadAdventurersByXPPaginated,
     useScoresInList,
 } from "@lootsurvivor/react";
 import { useMemo } from "react";
@@ -13,9 +13,11 @@ interface AdventurerWithScore extends AdventurerComplete {
 const endpoint = "https://ls-indexer-sepolia.provable.games/graphql";
 
 export const useAdventurersByXPWithScores = ({ page }: { page: number }) => {
-    const adventurersQuery = useAdventurersByXPPaginated({
+    const adventurersQuery = useDeadAdventurersByXPPaginated({
         skip: (page - 1) * 10,
     });
+
+    console.log(adventurersQuery.data);
     const adventurerIds =
         adventurersQuery.data?.adventurers.map((adv) => adv.id) || [];
 
